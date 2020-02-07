@@ -7,13 +7,13 @@ function checkFood(req, res, next) {
 }
 
 function checkTicket(req, res, next) {
-    if(!req.params.ticket) { return next('yoy dont have ticket ')}
+    if(!req.query.ticket) { return next('yoy dont have ticket ')}
     next()
 }
 
 function validateTicket(req, res, next) {
-    let ticketHit = req.params.ticket.split('=')[1]
-    let pattern = /[a-z]{6,}/
+    let ticketHit = req.query.ticket
+    let pattern = /^[a-z 0-9]{6,10}$/
     if(!pattern.test(ticketHit)) return next('hey in valid ticket')
     next()
 }
@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
     res.json({msg: 'welcome!'})
 })
 
-app.get('/qfx/:ticket', checkTicket, validateTicket, checkFood, function(req, res) {
+app.get('/qfx', checkTicket, validateTicket, checkFood, function(req, res) {
     res.json({msg: 'welcome to qfx! '})
 })
 
